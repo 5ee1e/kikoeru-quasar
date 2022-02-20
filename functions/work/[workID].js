@@ -39,19 +39,18 @@ export async function onRequestGet(context) {
     const workInfo = await res.json();
 
     // build meta
+    const descriptor = `Price: ${workInfo.price}
+Sales: ${workInfo.dl_count}
+
+Circle: ${workInfo.circle.name}
+Actors: ${workInfo.vas.map(v => v.name).join(', ')}
+Release: ${workInfo.release}`
     const meta = `
           <meta property="og:site_name" content="ASMR Online">
           <meta property="og:url" content="https://www.asmr.one/work/${workID}">
           <meta property="og:type" content="website">
           <meta property="og:title" content="${workInfo.title}">
-          <meta property="og:description" content="
-          Price: ${workInfo.price} \n
-          Sales: ${workInfo.dl_count} \n\n
-
-          Circle: ${workInfo.circle.name} \n
-          Actors: ${workInfo.vas.map(v => v.name).join(', ')} \n
-          Release: ${workInfo.release} \n
-          ">
+          <meta property="og:description" content="${descriptor}">
           <meta property="og:image" content="${workInfo.mainCoverUrl}">
     `
 
