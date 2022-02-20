@@ -30,7 +30,11 @@ export async function onRequestGet(context) {
     // request work info from api
     const res = await fetch(`https://api.asmr.one/api/workInfo/${workID}`);
     if (res.status !== 200) {
-      return returnDefaultResponseWithError(staticResponse, 'res.status !== 200');
+      return returnDefaultResponseWithError(staticResponse, {
+        msg: 'res.status !== 200',
+        detail: res.status,
+        url: `https://api.asmr.one/api/workInfo/${workID}`
+      });
     }
     const workInfo = await res.json();
 
