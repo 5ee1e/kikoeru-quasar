@@ -39,7 +39,7 @@ export async function onRequestGet(context) {
     const workInfo = await res.json();
 
     // build meta
-    const descriptor = `Price: ${workInfo.price}
+    const descriptor = `Price: ${workInfo.price} JPY
 Sales: ${workInfo.dl_count}
 
 Circle: ${workInfo.circle.name}
@@ -52,6 +52,8 @@ Release: ${workInfo.release}`
           <meta property="og:title" content="${workInfo.title}">
           <meta property="og:description" content="${descriptor}">
           <meta property="og:image" content="${workInfo.mainCoverUrl}">
+          <meta name="twitter:card" content="summary_large_image">
+          <meta name="twitter:image:src" content="${workInfo.mainCoverUrl}">
     `
 
     // render metadata to html
