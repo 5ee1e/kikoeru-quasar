@@ -47,7 +47,7 @@ Actors: ${workInfo.vas.map(v => v.name).join(', ')}
 Release: ${workInfo.release}`
     const meta = `
           <meta property="og:site_name" content="ASMR Online">
-          <meta property="og:url" content="https://www.asmr.one/work/${workID}">
+          <meta property="og:url" content="https://www.asmr.one/work/RJ${workID}">
           <meta property="og:type" content="website">
           <meta property="og:title" content="${workInfo.title}">
           <meta property="og:description" content="${descriptor}">
