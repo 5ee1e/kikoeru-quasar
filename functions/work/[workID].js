@@ -8,8 +8,12 @@ export async function onRequestGet(context) {
     next, // used for middleware or to fetch assets
   } = context;
 
-  let res = await next();
-  res = await res.text();
+  // 加载静态网页文件
+  const staticResponse = await next();
+  if (staticResponse.status !== 200) {
+    return staticResponse;
+  }
+  const staticResponseHTML = await staticResponse.text();
 
   try {
     // Get the workID from the URL
@@ -17,6 +21,9 @@ export async function onRequestGet(context) {
 
     // request work info from api
     const res = await fetch(`https://api.asmr.one/api/workInfo/${workID}`);
+    if (res.status !== 200) {
+      return staticResponse;
+    }
     const workInfo = await res.json();
 
     // build meta
@@ -37,9 +44,9 @@ export async function onRequestGet(context) {
     `
 
     // render metadata to html
-    return new Response(res.replace('<head>', `<head>${meta}`), res);
+    return new Response(staticResponseHTML.replace('<head>', `<head>${meta}`), staticResponse);
   } catch (e) {
-    return new Response(res);
+    return staticResponse;
   }
 
 }
