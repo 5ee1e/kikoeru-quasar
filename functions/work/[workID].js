@@ -25,7 +25,7 @@ export async function onRequestGet(context) {
 
   try {
     // Get the workID from the URL
-    const workID = params.id;
+    const workID = params.workID;
 
     // request work info from api
     const res = await fetch(`https://api.asmr.one/api/workInfo/${workID}`);
