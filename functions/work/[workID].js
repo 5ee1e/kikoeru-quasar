@@ -46,7 +46,11 @@ export async function onRequestGet(context) {
     const staticResponseHTML = await staticResponse.text();
     return new Response(staticResponseHTML.replace('<head>', `<head>${meta}`), staticResponse);
   } catch (e) {
-    return staticResponse;
+
+    const response = new Response(staticResponse.body)
+    response.headers.set('error', 'true');
+    response.headers.set('errors', JSON.stringify(e));
+    return response;
   }
 
 }
