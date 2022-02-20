@@ -13,7 +13,6 @@ export async function onRequestGet(context) {
   if (staticResponse.status !== 200) {
     return staticResponse;
   }
-  const staticResponseHTML = await staticResponse.text();
 
   try {
     // Get the workID from the URL
@@ -44,6 +43,7 @@ export async function onRequestGet(context) {
     `
 
     // render metadata to html
+    const staticResponseHTML = await staticResponse.text();
     return new Response(staticResponseHTML.replace('<head>', `<head>${meta}`), staticResponse);
   } catch (e) {
     return staticResponse;
