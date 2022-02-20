@@ -8,31 +8,38 @@ export async function onRequestGet(context) {
     next, // used for middleware or to fetch assets
   } = context;
 
-  // Get the workID from the URL
-  const workID = params.id;
+  let res = await next();
+  res = await res.text();
 
-  // request work info from api
-  const res = await fetch(`https://api.asmr.one/api/workInfo/${workID}`);
-  const workInfo = await res.json();
+  try {
+    // Get the workID from the URL
+    const workID = params.id;
 
-  // build meta
-  const meta = `
-        <meta property="og:site_name" content="ASMR Online">
-        <meta property="og:url" content="https://www.asmr.one/work/${workID}">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="${workInfo.title}">
-        <meta property="og:description" content="
-        Price: ${workInfo.price} \n
-        Sales: ${workInfo.dl_count} \n\n
+    // request work info from api
+    const res = await fetch(`https://api.asmr.one/api/workInfo/${workID}`);
+    const workInfo = await res.json();
 
-        Circle: ${workInfo.circle.name} \n
-        Actors: ${workInfo.vas.map(v => v.name).join(', ')} \n
-        Release: ${workInfo.release} \n
-        ">
-        <meta property="og:image" content="${workInfo.mainCoverUrl}">
-  `
+    // build meta
+    const meta = `
+          <meta property="og:site_name" content="ASMR Online">
+          <meta property="og:url" content="https://www.asmr.one/work/${workID}">
+          <meta property="og:type" content="website">
+          <meta property="og:title" content="${workInfo.title}">
+          <meta property="og:description" content="
+          Price: ${workInfo.price} \n
+          Sales: ${workInfo.dl_count} \n\n
 
-  // render metadata to html
-  const html = await next();
-  return new Response(html.replace('<head>', `<head>${meta}`), res);
+          Circle: ${workInfo.circle.name} \n
+          Actors: ${workInfo.vas.map(v => v.name).join(', ')} \n
+          Release: ${workInfo.release} \n
+          ">
+          <meta property="og:image" content="${workInfo.mainCoverUrl}">
+    `
+
+    // render metadata to html
+    return new Response(res.replace('<head>', `<head>${meta}`), res);
+  } catch (e) {
+    return new Response(res);
+  }
+
 }
