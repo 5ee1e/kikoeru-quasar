@@ -62,7 +62,7 @@ Use asmr.one to listen this work online for free!`
           <meta name="twitter:image:src" content="${workInfo.mainCoverUrl}">
     `
 
-    const title = `RJ${workInfo.id} - ${workInfo.title}`
+    const title = `<title>RJ${workInfo.id} - ${workInfo.title}</title>`
 
     // render metadata to html
     const staticResponseHTML = await staticResponse.text();
